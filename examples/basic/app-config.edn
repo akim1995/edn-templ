@@ -1,0 +1,10 @@
+;; Simple application configuration template
+{:app {:name "MyWebApp"
+       :version "1.0.0" 
+       :url #interp "${host}/api/v1"}
+ 
+ :database {:host #ref :db-host
+            :port 5432
+            :name #interp "${app-name}-db"}
+            
+ :features ["authentication" "logging" "metrics"]}

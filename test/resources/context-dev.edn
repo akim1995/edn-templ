@@ -1,0 +1,5 @@
+{:host "localhost:3000"
+ :port 3000
+ :db-host "localhost"
+ :app-name "myapp-dev"
+ :debug? true}

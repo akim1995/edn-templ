@@ -1,0 +1,12 @@
+{
+  "service": {
+    "name": "MyAPI",
+    "version": "2.0.0",
+    "baseUrl": {"~#interp": "${host}/v2"},
+    "port": {"~#ref": "port"}
+  },
+  "database": {
+    "host": {"~#ref": "db-host"},
+    "port": 5432
+  }
+}

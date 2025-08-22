@@ -1,0 +1,5 @@
+{:host "myapp.com"
+ :port 80
+ :db-host "prod-postgres.internal"
+ :app-name "myapp-prod"
+ :debug? false}

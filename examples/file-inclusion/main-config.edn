@@ -1,0 +1,19 @@
+;; Main configuration that includes other files
+{:app {:name "ModularApp"}
+ 
+ ;; Include entire sub-configurations
+ :database #file "examples/file-inclusion/database.edn"
+ :server #file "examples/file-inclusion/server.edn"
+ 
+ ;; Splice multiple feature lists into one array
+ :all-features ["core" 
+                "auth"
+                #splice-file "examples/file-inclusion/plugin-features.edn"
+                "admin"
+                #splice-file "examples/file-inclusion/optional-features.edn"]
+ 
+ ;; Include whole sequence as-is 
+ :base-features #file "examples/file-inclusion/extra-features.edn"
+ 
+ ;; Include raw text content
+ :license #raw-file "examples/file-inclusion/LICENSE.txt"}

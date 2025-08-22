@@ -1,0 +1,18 @@
+;; Simple app configuration example
+{:app {:name "MyApp"
+       :version "1.0.0"
+       :url #interp "${host}/api/v1"
+       :port #ref :port}
+ 
+ :database {:host #ref :db-host
+            :port 5432
+            :name #interp "${app-name}-db"}
+            
+ :features #file "test/resources/extra/features.edn"
+ :readme-content #raw-file "test/resources/extra/readme.txt"
+ 
+ ;; Example of splice-file splicing multiple files
+ :all-users ["admin"
+             #splice-file "test/resources/extra/regular-users.edn" 
+             "guest"
+             #splice-file "test/resources/extra/premium-users.edn"]}

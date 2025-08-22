@@ -1,0 +1,4 @@
+;; Development environment context
+{:host "localhost:3000"
+ :db-host "localhost"
+ :app-name "mywebapp-dev"}

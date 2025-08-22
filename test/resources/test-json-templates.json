@@ -1,0 +1,13 @@
+{
+  "app": {
+    "name": "MyApp",
+    "url": {"~#interp": "${host}/api/v1"},
+    "port": {"~#ref": "port"},
+    "environment": {"~#ref": "env"}
+  },
+  "database": {
+    "host": {"~#ref": "db-host"},
+    "port": 5432
+  },
+  "features": {"~#splice-file": "test/resources/extra/features.edn"}
+}

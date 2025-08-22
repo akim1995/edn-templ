@@ -1,0 +1,4 @@
+;; Production environment context
+{:host "api.mywebapp.com"
+ :db-host "prod-postgres.internal" 
+ :app-name "mywebapp"}

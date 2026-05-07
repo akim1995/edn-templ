@@ -9,7 +9,7 @@ A simple Clojure library for templating EDN and JSON files with variable substit
 - **Structure stays as data**: composition (`#ref`, `#file`, `#splice-file`, `#raw-file`) uses real EDN reader tags — not strings parsed at render time. String values still use `${var}` interpolation inside `#interp`.
 - **File composition**: split large config files into smaller pieces.
 - **Minimal by design**: no loops, conditionals, or complex logic — just variables and file inclusion.
-- **JSON, with caveats**: the same tags work in JSON via a sentinel-key convention (`{"~#interp": "${host}/api"}`) since JSON has no tagged literals. Less idiomatic than EDN, but lets you template JSON consumed by non-Clojure tools.
+- **JSON**: the same tags work in JSON via a sentinel-key convention (`{"~#interp": "${host}/api"}`) since JSON has no tagged literals. Less idiomatic than EDN, but lets you template JSON consumed by non-Clojure tools.
 
 ## Installation
 
@@ -72,6 +72,41 @@ Add to your `deps.edn`:
        :database {:host "postgres" :port 5432}
        :features ["auth" "logging" "metrics"]
        :all-users ["admin" "alice" "bob" "charlie" "guest"]}}
+```
+
+### JSON
+
+JSON has no tagged literals, so each tag becomes a single-key map whose key is `~#<tag>`.
+
+**api-config.json** (template):
+```json
+{
+  "service": {
+    "name": "MyAPI",
+    "baseUrl": {"~#interp": "${host}/v2"},
+    "port":    {"~#ref": "port"}
+  },
+  "database": {"~#file": "db.json"}
+}
+```
+
+**variables.json**:
+```json
+{"host": "api.example.com", "port": 8080}
+```
+
+**db.json**:
+```json
+{"host": "postgres.example.com", "port": 5432}
+```
+
+```clojure
+(eval-template "api-config.json" "variables.json" :tagged-json? true)
+;; =>
+{:service  {:name "MyAPI"
+            :baseUrl "api.example.com/v2"
+            :port 8080}
+ :database {:host "postgres.example.com" :port 5432}}
 ```
 
 ## Available Tags

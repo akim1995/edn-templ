@@ -6,10 +6,10 @@ A simple Clojure library for templating EDN and JSON files with variable substit
 
 ## Why This Exists
 
-- **EDN-first**: Uses tagged literals naturally, not text-based templating adapted for EDN
-- **File composition**: Split large config files into smaller pieces
-- **Minimal by design**: No loops, conditionals, or complex logic - just variables and file inclusion
-- **Dual format**: Same approach works for both EDN and JSON
+- **Structure stays as data**: composition (`#ref`, `#file`, `#splice-file`, `#raw-file`) uses real EDN reader tags — not strings parsed at render time. String values still use `${var}` interpolation inside `#interp`.
+- **File composition**: split large config files into smaller pieces.
+- **Minimal by design**: no loops, conditionals, or complex logic — just variables and file inclusion.
+- **JSON, with caveats**: the same tags work in JSON via a sentinel-key convention (`{"~#interp": "${host}/api"}`) since JSON has no tagged literals. Less idiomatic than EDN, but lets you template JSON consumed by non-Clojure tools.
 
 ## Installation
 
@@ -84,7 +84,7 @@ Add to your `deps.edn`:
 | `#splice-file` | Splice file contents inline | `["item1" #splice-file "more-items.edn" "item2"]` |
 | `#raw-file` | Include raw file content | `#raw-file "schema.sql"` |
 
-Works the same in JSON with `{"~#tag": "value"}` syntax.
+In JSON, the same tags are written as single-key maps: `{"~#tag": "value"}`. Pass `:tagged-json? true` to activate the convention.
 
 ## Options
 

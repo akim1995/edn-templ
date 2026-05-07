@@ -34,6 +34,12 @@ Add to your `deps.edn`:
 (templ/eval-template "template.edn" "context.edn" :output :json)
 ```
 
+### How paths are resolved
+
+- **Absolute** (`/etc/foo.edn`) — filesystem only.
+- **`./` or `../`** — resolved relative to the template's directory (so `#file "./db.edn"` next to `app.edn` works regardless of where you run from).
+- **Bare relative** (`template.edn`) — filesystem first (relative to the JVM's working directory), then classpath / resources.
+
 ## Example
 
 **app-config.edn** (template):
@@ -124,12 +130,10 @@ In JSON, the same tags are written as single-key maps: `{"~#tag": "value"}`. Pas
 ## Options
 
 ```clojure
-;; JSON support
-(eval-template "config.json" "vars.json" :tagged-json? true)
-
-;; Output as JSON
-(eval-template "config.edn" "vars.edn" :output :json)
-
-;; Filesystem paths or classpath resources both work
-(eval-template "/path/to/config.edn" "/path/to/vars.edn")
+(templ/eval-template "template.edn")
+(templ/eval-template "template.edn" "context.edn")
+(templ/eval-template "template.edn" {:host "localhost"})
+(templ/eval-template "template.edn" {:host "localhost"} :output :json)
+(templ/eval-template "template.json" "context.json" :tagged-json? true)
+(templ/eval-template "/abs/path/template.edn" "/abs/path/context.edn")
 ```
